@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <v-header></v-header>
     <!-- 侧边栏 -->
-    <v-menu></v-menu>
+    <Menu mode="vertical"/>
     <!-- 显示内容区域   -->
     <div class="content-box">
       <div class="content">
@@ -20,11 +20,11 @@
 
 <script>
   import vHeader from '@/components/index/Header'
-  import vMenu from '@/components/index/Menu'
+  import Menu from '@/components/index/Menu'
 
   export default {
     name: "Home",
-    components: {vHeader, vMenu}
+    components: {vHeader, Menu}
   }
 </script>
 

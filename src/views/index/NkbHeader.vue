@@ -1,12 +1,12 @@
 <template>
   <div class="header">
     <!-- 折叠按钮 -->
-    <div class="collapse-btn" @click="collapseChage(showMenu)">
+    <div class="collapse-btn" @click="collapseChage">
       <i class="el-icon-menu"></i>
     </div>
-    <div class="logo">模板</div>
+    <div class="logo">Tpulse管理后台</div>
     <!-- 侧边栏 -->
-    <Menu :mode="'horizontal'" v-if="showMenu"/>
+    <Menu mode="horizontal"/>
     <div class="header-right">
       <user-panel></user-panel>
     </div>
@@ -20,12 +20,6 @@
   
   export default {
     name: "nkbHeader",
-    props:{
-      showMenu:{
-        type:Boolean,
-        default: true
-      }
-    },
     components: {UserPanel,Menu},
     data() {
       return {
@@ -36,12 +30,9 @@
       }
     },
     methods: {
-      collapseChage(mode) {
-        if(mode){
-          return;
-        }
-        this.collapse = !this.collapse;
-        bus.$emit('collapse', this.collapse);
+      collapseChage() {
+        // this.collapse = !this.collapse;
+        // bus.$emit('collapse', this.collapse);
       },
     }
   }

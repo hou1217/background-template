@@ -22,7 +22,7 @@ a {
 
 .content-box {
     position: absolute;
-    left: 250px;
+    left: 0px;
     right: 0;
     top: 70px;
     bottom: 0;
@@ -31,14 +31,16 @@ a {
     transition: left .3s ease-in-out;
     background: #f0f0f0;
 }
-
+.content-box.vertical{
+    left: 200px;
+}
 .content {
     width: auto;
     padding: 40px;
 }
 
-.content-collapse {
-    left: 65px;
+.content-collapse.vertical {
+    left: 0px;
 }
 
 .container {

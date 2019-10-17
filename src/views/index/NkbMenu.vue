@@ -1,8 +1,8 @@
 <template>
-  <div class="sidebar" :class="mode==='horizontal'?'horizontal':'vertical'">
+  <div class="sidebar">
     <el-menu
       class="sidebar-el-menu"
-      :mode="mode"
+      mode="horizontal"
       :default-active="onRoutes"
       :collapse="collapse"
       background-color="#242f42"
@@ -57,17 +57,17 @@
   import LoginApi from '@/service/login'
   export default {
     name: "nkbMenu",
-    props:{
-      mode:{
-        type:String,
-        default:'horizontal'
-      }
-    },
     data() {
       return {
         collapse: false,
         items: [],
         activeIndex:'',
+        // 角色数组，目前写在前台
+        checkRoles:["nakebaoAdmin","nakebao"],
+        accountRoles:["nakebaoAdmin"],
+        rightsRoles:["root"],
+        contentRoles:["nakebaoAdmin"],
+        // ----
       }
     },
     computed: {
@@ -226,27 +226,20 @@
   }
 </script>
 
-<style scoped lang="stylus">
+<style scoped>
   .sidebar {
-    &.vertical{
-      display: block;
-      position: absolute;
-      left: 0;
-      top: 70px;
-      bottom: 0;
-      width 205px
-      .sidebar-el-menu:not(.el-menu--collapse) {
-        width: 205px;
-      } 
-    }
-    &.horizontal{
-      float:left;
-      display: block;
-      height: 100%;
-    }
+    float:left;
+    display: block;
+    height: 100%;
+    /* position: absolute;
+    left: 0;
+    top: 0px;
+    bottom: 0; */
   }
-
   
+  /* .sidebar-el-menu:not(.el-menu--collapse) {
+    width: 250px;
+  } */
   
   .sidebar > ul {
     height: 100%;
