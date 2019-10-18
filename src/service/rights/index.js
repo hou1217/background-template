@@ -368,6 +368,50 @@ function deleteVuePath(params){
     });
   });
 }
+function deleteVuePathBatch(params){
+  return new Promise((resolve, reject) => {
+    axios.post(`/security-app/permission/vuepath/delete/batch`,params)
+    .then((res) => {
+      resolve(res);
+    })
+    .catch((err)=>{
+      reject(err);
+    });
+  });
+}
+function deletePathBatch(params){
+  return new Promise((resolve, reject) => {
+    axios.post(`/security-app/permission/path/delete/batch`,params)
+    .then((res) => {
+      resolve(res);
+    })
+    .catch((err)=>{
+      reject(err);
+    });
+  });
+}
+function orderVuePath(params){
+  return new Promise((resolve, reject) => {
+    axios.post(`/security-app/permission/vuepath/order`,params)
+    .then((res) => {
+      resolve(res);
+    })
+    .catch((err)=>{
+      reject(err);
+    });
+  });
+}
+function orderPath(params){
+  return new Promise((resolve, reject) => {
+    axios.post(`/security-app/permission/path/order`,params)
+    .then((res) => {
+      resolve(res);
+    })
+    .catch((err)=>{
+      reject(err);
+    });
+  });
+}
 /**
  * 批量激活用户
  * @param params
@@ -426,6 +470,10 @@ const rightsApi = {
   deleteRights,
   deleteRole,
   deleteVuePath,
+  deleteVuePathBatch,
+  deletePathBatch,
+  orderVuePath,
+  orderPath,
   activateAccounts,
   deleteAccounts
 }

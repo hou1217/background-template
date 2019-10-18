@@ -97,7 +97,11 @@
           console.log('获取数据成功');
           console.log(res);
           this.items = res.data.root.subs;
-
+          this.items = [{
+            icon: 'el-icon-document',
+            index: '/hello',
+            title: '首页',
+          }].concat(res.data.root.subs);
         })
         .catch((err)=>{
           console.error('数据异常：', err);

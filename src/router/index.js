@@ -28,8 +28,15 @@ export default new Router({
       path: '/home',
       name: 'home',
       component: Home,
-      redirect: '/account',
+      redirect: '/hello',
       children: [
+        {  
+          path: '/hello',
+          name: 'hello',
+          component: () =>
+          import ('@/views/Hello'),
+          meta: { keepAlive: false },
+        },
         /**
         * APP管理
         * */
