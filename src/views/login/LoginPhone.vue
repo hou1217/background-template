@@ -44,7 +44,7 @@ export default {
       },
       rules: {
         username: [
-          {required: true, message: '请输入用户名', trigger: 'blur'}
+          {required: true, message: '请输入手机号', trigger: 'blur'}
         ],
         password: [
           {required: true, message: '请输入密码', trigger: 'blur'}
@@ -57,26 +57,32 @@ export default {
       toastVisible: false,  // 错误提示展示状态
     }
   },
-  created(){
-    // this.submitForm()
-  },
   methods:{
     submitForm() {
       console.log(this.userForm);
-      //调用登陆接口
-      LoginApi.loginPhone(Object.assign({},this.userForm,{password:md5(this.userForm.password)}))
-      .then((res) => {
-        console.log('获取数据成功');
-        console.log(res);
-        this.$router.push({
-          path: '/home'
-        });
+      this.$refs.ruleForm.validate((valid)=>{
+        if(!valid){
+          return false;
+        }else{
+          //调用登陆接口
+          LoginApi.loginPhone(Object.assign({},this.userForm,{password:md5(this.userForm.password)}))
+          .then((res) => {
+            console.log('登陆成功');
+            this.toastData.msg = '登陆成功';
+            this.toastVisible = true;
+            console.log(res);
+            this.$router.push({
+              path: '/home'
+            });
+          })
+          .catch((err)=>{
+            console.error('数据异常：', err);
+            this.toastData.msg = err.msg ? err.msg : '登陆失败';
+            this.toastVisible = true;
+          });
+        }
       })
-      .catch((err)=>{
-        console.error('数据异常：', err);
-        this.toastData.msg = err.msg ? err.msg : '登陆失败';
-        this.toastVisible = true;
-      });
+      
     },
     goToRegister(){
       this.$router.push({path:'/register'});

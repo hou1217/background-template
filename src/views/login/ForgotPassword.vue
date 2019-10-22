@@ -47,7 +47,7 @@ export default {
       },
       rules: {
         username: [
-          {required: true, message: '请输入用户名', trigger: 'blur'}
+          {required: true, message: '请输入手机号', trigger: 'blur'}
         ],
         code: [
           {required: true, message: '请输入验证码', trigger: 'blur'}
@@ -66,20 +66,28 @@ export default {
   methods:{
     submitForm() {
       console.log(this.userForm);
-      //调用登陆接口
-      LoginApi.resetPassword(Object.assign({},this.userForm,{password:md5(this.userForm.password)}))
-      .then((res) => {
-        console.log('重置成功');
-        console.log(res);
-        this.$router.push({
-          path: '/loginPhone'
-        });
+      this.$refs.ruleForm.validate((valid)=>{
+        if(!valid){
+          return false;
+        }else{
+          //调用登陆接口
+          LoginApi.resetPassword(Object.assign({},this.userForm,{password:md5(this.userForm.password)}))
+          .then((res) => {
+            console.log('重置成功');
+            this.toastData.msg = '重置成功';
+            this.toastVisible = true;
+            console.log(res);
+            this.$router.push({
+              path: '/loginPhone'
+            });
+          })
+          .catch((err)=>{
+            console.error('数据异常：', err);
+            this.toastData.msg = err.msg ? err.msg : '登陆失败';
+            this.toastVisible = true;
+          });
+        }
       })
-      .catch((err)=>{
-        console.error('数据异常：', err);
-        this.toastData.msg = err.msg ? err.msg : '登陆失败';
-        this.toastVisible = true;
-      });
     },
     goToLogin(){
       this.$router.push({path:'/loginPhone'});
@@ -87,11 +95,10 @@ export default {
     getCode(){
       LoginApi.getResetCode(Object.assign({},this.userForm))
       .then((res) => {
-        console.log('获取数据成功');
+        console.log('获取验证码成功');
         console.log(res);
-        // this.$router.push({
-        //   path: '/home'
-        // });
+        this.toastData.msg = '获取验证码成功';
+        this.toastVisible = true;
       })
       .catch((err)=>{
         console.error('数据异常：', err);
