@@ -8,7 +8,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/loginPhone'
     },
     {
       path: '/login',
@@ -18,10 +18,24 @@ export default new Router({
       meta: { keepAlive: false },
     },
     {
+      path: '/loginPhone',
+      name: 'loginPhone',
+      component: () =>
+          import ( /* webpackChunkName: "loginPhone" */ '@/views/login/LoginPhone'),
+      meta: { keepAlive: false },
+    },
+    {
       path: '/register',
       name: 'register',
       component: () =>
           import ( /* webpackChunkName: "register" */ '@/views/login/Register'),
+      meta: { keepAlive: false },
+    },
+    {
+      path: '/forgot',
+      name: 'forgot',
+      component: () =>
+          import ( /* webpackChunkName: "register" */ '@/views/login/ForgotPassword'),
       meta: { keepAlive: false },
     },
     {

@@ -43,7 +43,7 @@ import LoginApi from '@/service/LoginApi'
         if (command === 'logout') {
           LoginApi.clearSession(null);
           // this.$store.commit('clearSession', null);
-          this.$router.push('/login');
+          this.$router.push('/loginPhone');
         }
       },
       handleFullScreen() {

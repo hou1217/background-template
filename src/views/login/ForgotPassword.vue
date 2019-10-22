@@ -15,7 +15,7 @@
             @keyup.enter.native="submitForm"></el-input>
         </el-form-item>
         <div class="login-btn">
-          <el-button type="primary" @click="submitForm">注册</el-button>
+          <el-button type="primary" @click="submitForm">重置密码</el-button>
           <br>
           <el-button type="text" @click="goToLogin">已有账号，直接登陆</el-button>
 
@@ -63,16 +63,13 @@ export default {
       toastVisible: false,  // 错误提示展示状态
     }
   },
-  created(){
-    // this.submitForm()
-  },
   methods:{
     submitForm() {
       console.log(this.userForm);
       //调用登陆接口
-      LoginApi.register(Object.assign({},this.userForm,{password:md5(this.userForm.password)}))
+      LoginApi.resetPassword(Object.assign({},this.userForm,{password:md5(this.userForm.password)}))
       .then((res) => {
-        console.log('注册成功');
+        console.log('重置成功');
         console.log(res);
         this.$router.push({
           path: '/loginPhone'
@@ -88,7 +85,7 @@ export default {
       this.$router.push({path:'/loginPhone'});
     },
     getCode(){
-      LoginApi.getCode(Object.assign({},this.userForm))
+      LoginApi.getResetCode(Object.assign({},this.userForm))
       .then((res) => {
         console.log('获取数据成功');
         console.log(res);

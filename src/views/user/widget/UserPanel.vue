@@ -56,7 +56,7 @@ export default {
           if(res.state === "000000"){
             localStorage.removeItem('ticket');
             localStorage.removeItem('USER_NAME');
-            this.$router.push({path:'login'})
+            this.$router.push({path:'loginPhone'})
           }else{
             this.$message({
               duration:1500,

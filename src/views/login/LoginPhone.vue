@@ -2,23 +2,21 @@
   <div class="login-wrap">
     <div class="ms-title">纳客宝管理后台</div>
     <div class="ms-login">
-      <el-form :model="userForm" :rules="rules" ref="ruleForm" label-width="90px" class="demo-ruleForm">
+      <el-form :model="userForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm">
         <el-form-item prop="username" label="手机号">
           <el-input v-model="userForm.phoneNum" placeholder="手机号"></el-input>
-        </el-form-item>
-        <el-form-item prop="code" label="验证码">
-          <el-input type="number"  placeholder="验证码" v-model="userForm.code"></el-input>
-          <el-button type="text" @click="getCode">获取验证码</el-button>
         </el-form-item>
         <el-form-item prop="password" label="密码">
           <el-input type="password" placeholder="密码" v-model="userForm.password"
             @keyup.enter.native="submitForm"></el-input>
         </el-form-item>
         <div class="login-btn">
-          <el-button type="primary" @click="submitForm">注册</el-button>
+          <el-button type="primary" @click="submitForm">登陆</el-button>
           <br>
-          <el-button type="text" @click="goToLogin">已有账号，直接登陆</el-button>
-
+          <div class="other-zone">
+            <el-button type="text" @click="goToForgot">忘记密码</el-button>
+            <el-button type="text" @click="goToRegister">注册</el-button>
+          </div>
         </div>
         <!-- <router-link class="to-authorize" to="/authorize"> 
           没有账号，授权注册
@@ -40,17 +38,13 @@ export default {
   data() {
     return {
       userForm: {
-        "appId": "tpulse",
-        "phoneNum": "",
-        "code": "",
-        "password": "",
+        appId:'tpulse',
+        phoneNum: '17356484796',
+        password: '123456'
       },
       rules: {
         username: [
           {required: true, message: '请输入用户名', trigger: 'blur'}
-        ],
-        code: [
-          {required: true, message: '请输入验证码', trigger: 'blur'}
         ],
         password: [
           {required: true, message: '请输入密码', trigger: 'blur'}
@@ -70,12 +64,12 @@ export default {
     submitForm() {
       console.log(this.userForm);
       //调用登陆接口
-      LoginApi.register(Object.assign({},this.userForm,{password:md5(this.userForm.password)}))
+      LoginApi.loginPhone(Object.assign({},this.userForm,{password:md5(this.userForm.password)}))
       .then((res) => {
-        console.log('注册成功');
+        console.log('获取数据成功');
         console.log(res);
         this.$router.push({
-          path: '/loginPhone'
+          path: '/home'
         });
       })
       .catch((err)=>{
@@ -84,29 +78,13 @@ export default {
         this.toastVisible = true;
       });
     },
-    goToLogin(){
-      this.$router.push({path:'/loginPhone'});
+    goToRegister(){
+      this.$router.push({path:'/register'});
     },
-    getCode(){
-      LoginApi.getCode(Object.assign({},this.userForm))
-      .then((res) => {
-        console.log('获取数据成功');
-        console.log(res);
-        // this.$router.push({
-        //   path: '/home'
-        // });
-      })
-      .catch((err)=>{
-        console.error('数据异常：', err);
-        
-      });
-    },
+    goToForgot(){
+      this.$router.push({path:'/forgot'});
+    }
   }
 }
 </script>
 <style scoped lang="stylus" src="@/stylus/login/common.styl"></style>
-<style lang="stylus" scoped>
-.ms-login {
-  height 240px
-}
-</style>

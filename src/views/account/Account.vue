@@ -16,6 +16,9 @@
             <el-col :span="4" class="input-box">
               <el-input v-model="select_account" clearable placeholder="账户名称"></el-input>
             </el-col>
+            <el-col :span="4" class="input-box">
+              <el-input v-model="select_phone" clearable placeholder="手机号"></el-input>
+            </el-col>
             <el-button type="primary" icon="el-icon-search" @click.stop="search">
               查询
             </el-button>
@@ -31,6 +34,7 @@
       >
         <!-- <el-table-column type="selection" :reserve-selection="true"></el-table-column> -->
         <el-table-column label="appId" prop="appId"></el-table-column>
+        <el-table-column label="手机号" prop="phone"></el-table-column>
         <el-table-column label="账户名称" prop="appUid"></el-table-column>
         <el-table-column label="序列号" prop="serialNo"></el-table-column>
         <el-table-column label="角色数量" prop="roleList.length"></el-table-column>
@@ -77,6 +81,7 @@ export default {
   data() {
     return {
       select_account: '',
+      select_phone:'',
       rolesList:[],// 角色列表
       loading: false,
       accountList:[],
@@ -87,7 +92,8 @@ export default {
     }
   },
   created(){
-    this.select_account = this.$route.query.account?this.$route.query.account:''
+    this.select_account = this.$route.query.account?this.$route.query.account:'';
+    this.select_phone =  this.$route.query.phone?this.$route.query.phone:'';
     this.currentPage = this.$route.query.page ? Number(this.$route.query.page) : 1;
     this.pageSize = this.$route.query.pageSize ? Number(this.$route.query.pageSize) : 10;
     this.getAccountList()
@@ -146,7 +152,8 @@ export default {
         query: {
           page: this.$route.query.page ? this.$route.query.page : 1,
           pageSize: val,
-          account: this.$route.query.account ? this.$route.query.account : ''
+          account: this.$route.query.account ? this.$route.query.account : '',
+          phone: this.$route.query.phone ? this.$route.query.phone : '',
         }
       });
       this.getAccountList();
@@ -159,7 +166,9 @@ export default {
         query: {
           page: val,
           pageSize: this.$route.query.pageSize ? this.$route.query.pageSize : 10,
-          account: this.$route.query.account ? this.$route.query.account : ''
+          account: this.$route.query.account ? this.$route.query.account : '',
+          phone: this.$route.query.phone ? this.$route.query.phone : '',
+
         }
       });
       this.getAccountList();
@@ -173,7 +182,8 @@ export default {
     // 获取用户列表
     getAccountList(){
       accountApi.getAccountList({
-        appUid: this.$route.query.account ? this.$route.query.account : '',
+        phone: this.$route.query.phone ? this.$route.query.phone : '',
+        appUid:this.$route.query.account ? this.$route.query.account : '',
         page: this.$route.query.page ? this.$route.query.page : this.currentPage,
         pageSize: this.$route.query.pageSize ? this.$route.query.pageSize : this.pageSize,
       }).then((res) => {
@@ -199,6 +209,7 @@ export default {
           page: this.$route.query.page ? this.$route.query.page : 1,
           pageSize: this.$route.query.pageSize ? this.$route.query.pageSize : 10,
           account: this.select_account,
+          phone: this.select_phone
         }
       });
       this.getAccountList();
