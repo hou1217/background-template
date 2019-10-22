@@ -39,8 +39,8 @@ export default {
     return {
       userForm: {
         appId:'tpulse',
-        phoneNum: '17356484796',
-        password: '123456'
+        phoneNum: '',
+        password: ''
       },
       rules: {
         username: [

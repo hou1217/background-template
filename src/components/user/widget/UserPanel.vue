@@ -7,9 +7,11 @@
       </el-tooltip>
     </div>
     <!-- 消息中心 -->
-
+    
     <!-- 用户头像 -->
-    <div class="user-avator"><img src="@/assets/logo.png" style="width: 100%; height: 100%; border-radius: 50%;"></div>
+    <div class="user-avator">
+      <img src="@/assets/logo.png" style="width: 100%; height: 100%; border-radius: 50%;">
+    </div>
     <!-- 用户名下拉菜单 -->
     <el-dropdown class="user-name" trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
@@ -17,6 +19,7 @@
           </span>
       <el-dropdown-menu slot="dropdown">
         <!-- vfor循环显示用户信息 -->
+        <el-dropdown-item v-for="(item,index) in hasSelectList" :key="index">{{item}}</el-dropdown-item>
         <el-dropdown-item command="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -24,66 +27,90 @@
 </template>
 
 <script>
-import LoginApi from '@/service/LoginApi'
-
-  export default {
-    name: "UserPanel",
-    data() {
-      return{
-        params: {
-          username: '',
-          token: ''
-        },
-        username: JSON.parse(localStorage.getItem('SESSION_KEY'))["username"],
-        fullscreen: false,
+import LoginApi from '@/service/login'  
+import {accountApi} from '@/service/account'
+export default {
+  name: "UserPanel",
+  data() {
+    return{
+      params: {
+        username: '',
+        token: ''
+      },
+      hasSelectList:[],
+      // todo 获取用户名并显示
+      username: localStorage.getItem('USER_NAME')?localStorage.getItem('USER_NAME'):'请重新登陆',
+      fullscreen: false,
+    }
+  },
+  created(){
+    this.hasSelectList = localStorage.getItem('ticket')?JSON.parse(localStorage.getItem('ticket'))["ROLE-LIST"]:[]
+  },
+  methods: {
+    //获取用户详情
+    handleCommand(command) {
+      if (command === 'logout') {
+        LoginApi.logout()
+        .then((res)=>{
+          console.log(res);
+          if(res.state === "000000"){
+            localStorage.removeItem('ticket');
+            localStorage.removeItem('USER_NAME');
+            this.$router.push({path:'loginPhone'})
+          }else{
+            this.$message({
+              duration:1500,
+              type: 'error',
+              message: '退出失败!'
+            });
+          }
+        }).catch((err)=>{
+          console.error(err);
+          if(err.state === "000004"){
+            localStorage.removeItem('ticket');
+            localStorage.removeItem('USER_NAME');
+            this.$router.push({path:'login'})
+          }
+        })
+        
       }
     },
-    methods: {
-      handleCommand(command) {
-        if (command === 'logout') {
-          LoginApi.clearSession(null);
-          // this.$store.commit('clearSession', null);
-          this.$router.push('/loginPhone');
+    handleFullScreen() {
+      let element = document.documentElement;
+      if (this.fullscreen) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
         }
-      },
-      handleFullScreen() {
-        let element = document.documentElement;
-        if (this.fullscreen) {
-          if (document.exitFullscreen) {
-            document.exitFullscreen();
-          } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-          } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-          } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-          }
-        } else {
-          if (element.requestFullscreen) {
-            element.requestFullscreen();
-          } else if (element.webkitRequestFullScreen) {
-            element.webkitRequestFullScreen();
-          } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
-          } else if (element.msRequestFullscreen) {
-            // IE11
-            element.msRequestFullscreen();
-          }
+      } else {
+        if (element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.msRequestFullscreen) {
+          // IE11
+          element.msRequestFullscreen();
         }
-        this.fullscreen = !this.fullscreen;
       }
+      this.fullscreen = !this.fullscreen;
     }
   }
+}
 </script>
 
 <style scoped>
   .header-user-con {
-    /*background: #e3e3e3;*/
     width: 250px;
     height: 70px;
-    /*padding-top: 25px;*/
   }
-
+  
   .btn-fullscreen {
     /*background: blue;*/
     /*padding-top: 10px;*/
@@ -91,17 +118,17 @@ import LoginApi from '@/service/LoginApi'
     float: left;
     padding-top: 25px;
   }
-
+  
   .user-avator {
     background: #fff;
-    width: 50px;
-    height: 50px;
+    width: 38px;
+    height: 38px;
     margin-left: 20px;
-    margin-top: 10px;
+    margin-top: 16px;
     border-radius: 50%;
     float: left;
   }
-
+  
   .user-name {
     float: left;
     margin-left: 20px;

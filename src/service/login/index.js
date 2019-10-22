@@ -100,6 +100,7 @@ export default{
           this.setSession(
             {
               "WALLAN-TOKEN": res.data.data.token,
+              "ROLE-LIST": res.data.data.roleNameList?res.data.data.roleNameList:[]
             }
           );
           resolve(res.data);

@@ -15,7 +15,7 @@
 
 <script>
   import bus from '@/assets/js/Bus';
-  import UserPanel from '@/views/user/widget/UserPanel'
+  import UserPanel from '@/components/user/widget/UserPanel'
   import Menu from '@/components/index/Menu';
   
   export default {
