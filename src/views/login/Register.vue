@@ -9,7 +9,7 @@
         label-width="90px"
         class="demo-ruleForm"
       >
-        <el-form-item prop="username" label="手机号">
+        <el-form-item prop="phoneNum" label="手机号">
           <el-input v-model="userForm.phoneNum" placeholder="手机号"></el-input>
         </el-form-item>
         <el-form-item prop="code" label="验证码">
@@ -55,7 +55,7 @@ export default {
         password: ""
       },
       rules: {
-        username: [
+        phoneNum: [
           { required: true, message: "请输入手机号", trigger: "blur" }
         ],
         code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
